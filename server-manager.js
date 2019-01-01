@@ -9,4 +9,11 @@ shardedDiscordRSSClient.run()
 
 shardedDiscordRSSClient.on('finishInit', () => {
   // Do whatever once the sharding manager has finished spawning and waiting for all shards to finish initialization
+  if (process.env.DRSS_EXPERIMENTAL_FEATURES) {
+    try {
+      require('./web/index.js')()
+    } catch (err) {
+      throw new Error(`process.env.DRSS_EXPERIMENTAL_FEATURES was defined but ./web/index.js could not be loaded ${err.message}`)
+    }
+  }
 })
